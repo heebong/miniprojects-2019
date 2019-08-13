@@ -14,13 +14,10 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Embedded
-    @Column(nullable = false)
     private YoutubeId youtubeId;
     @Embedded
-    @Column(nullable = false)
     private Title title;
     @Embedded
-    @Column
     private Contents contents;
     @CreationTimestamp
     private LocalDateTime createDate;
