@@ -9,7 +9,10 @@ import java.util.Objects;
 @Embeddable
 public class YoutubeId {
     @Column(nullable = false)
-    private final String youtubeId;
+    private String youtubeId;
+
+    private YoutubeId() {
+    }
 
     public YoutubeId(String youtubeId) {
         checkYoutubeId(youtubeId);
@@ -20,5 +23,9 @@ public class YoutubeId {
         if (Objects.isNull(youtubeId) || youtubeId.trim().isEmpty()) {
             throw new InvalidYoutubeIdException();
         }
+    }
+
+    public String getYoutubeId() {
+        return youtubeId;
     }
 }

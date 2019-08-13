@@ -19,16 +19,34 @@ public class Video {
     private Title title;
     @Embedded
     private Contents contents;
-    @CreationTimestamp
+    @CreationTimestamp()
     private LocalDateTime createDate;
 
-    private Video() {
-
-    }
+    private Video() {}
 
     public Video(YoutubeId youtubeId, Title title, Contents contents) {
         this.youtubeId = youtubeId;
         this.title = title;
         this.contents = contents;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public YoutubeId getYoutubeId() {
+        return youtubeId;
+    }
+
+    public Title getTitle() {
+        return title;
+    }
+
+    public Contents getContents() {
+        return contents;
+    }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
     }
 }

@@ -9,7 +9,10 @@ import java.util.Objects;
 @Embeddable
 public class Title {
     @Column(nullable = false, length = 100)
-    private final String title;
+    private String title;
+
+    private Title() {
+    }
 
     public Title(String title) {
         checkTitle(title);
@@ -20,5 +23,9 @@ public class Title {
         if (Objects.isNull(title) || title.trim().isEmpty()) {
             throw new InvalidTitleException();
         }
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

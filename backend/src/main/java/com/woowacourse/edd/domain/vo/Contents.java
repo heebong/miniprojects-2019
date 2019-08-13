@@ -8,9 +8,16 @@ import javax.persistence.Lob;
 public class Contents {
     @Column
     @Lob
-    private final String contents;
+    private String contents;
+
+    private Contents() {
+    }
 
     public Contents(String contents) {
         this.contents = contents;
+    }
+
+    public String getContents() {
+        return contents;
     }
 }
