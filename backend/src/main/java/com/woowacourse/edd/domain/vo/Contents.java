@@ -1,7 +1,6 @@
 package com.woowacourse.edd.domain.vo;
 
 import com.woowacourse.edd.exceptions.InvalidContentsException;
-import com.woowacourse.edd.exceptions.InvalidTitleException;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -10,6 +9,7 @@ import java.util.Objects;
 
 @Embeddable
 public class Contents {
+
     @Column(nullable = false)
     @Lob
     private String contents;

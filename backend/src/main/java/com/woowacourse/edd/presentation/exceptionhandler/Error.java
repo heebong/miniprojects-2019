@@ -1,6 +1,7 @@
 package com.woowacourse.edd.presentation.exceptionhandler;
 
 public class Error {
+
     private String result;
     private String message;
 

@@ -10,19 +10,25 @@ import java.time.LocalDateTime;
 
 @Entity
 public class Video {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Embedded
     private YoutubeId youtubeId;
+
     @Embedded
     private Title title;
+
     @Embedded
     private Contents contents;
+
     @CreationTimestamp()
     private LocalDateTime createDate;
 
-    private Video() {}
+    private Video() {
+    }
 
     public Video(YoutubeId youtubeId, Title title, Contents contents) {
         this.youtubeId = youtubeId;

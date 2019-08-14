@@ -8,6 +8,7 @@ import java.util.Objects;
 
 @Embeddable
 public class YoutubeId {
+
     @Column(nullable = false)
     private String youtubeId;
 

@@ -1,6 +1,7 @@
 package com.woowacourse.edd.application.response;
 
 public class VideoResponse {
+
     private final long id;
     private final String youtubeId;
     private final String title;

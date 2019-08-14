@@ -1,15 +1,16 @@
 package com.woowacourse.edd.application.service;
 
 import com.woowacourse.edd.application.converter.VideoConverter;
+import com.woowacourse.edd.application.dto.VideoSaveRequestDto;
+import com.woowacourse.edd.application.response.VideoResponse;
 import com.woowacourse.edd.domain.Video;
 import com.woowacourse.edd.repository.VideoRepository;
-import com.woowacourse.edd.application.response.VideoResponse;
-import com.woowacourse.edd.application.dto.VideoSaveRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class VideoService {
+
     private VideoRepository videoRepository;
     private VideoConverter videoConverter;
 

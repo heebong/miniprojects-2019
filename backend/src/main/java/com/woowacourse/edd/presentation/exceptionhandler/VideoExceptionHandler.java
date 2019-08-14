@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @ControllerAdvice(basePackages = {"com.woowacourse.edd.presentation.controller"})
 public class VideoExceptionHandler {
+
     @ResponseBody
     @ExceptionHandler(InvalidTitleException.class)
     public ResponseEntity<Error> handleTitleError(InvalidTitleException e) {

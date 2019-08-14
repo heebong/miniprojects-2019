@@ -1,8 +1,8 @@
 package com.woowacourse.edd.presentation.controller;
 
-import com.woowacourse.edd.application.service.VideoService;
-import com.woowacourse.edd.application.response.VideoResponse;
 import com.woowacourse.edd.application.dto.VideoSaveRequestDto;
+import com.woowacourse.edd.application.response.VideoResponse;
+import com.woowacourse.edd.application.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/videos")
 public class VideoController {
+
     private VideoService videoService;
 
     @Autowired
