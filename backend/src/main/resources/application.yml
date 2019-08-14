@@ -16,3 +16,6 @@ spring:
     url: jdbc:mysql://localhost:3306/blog?characterEncoding=UTF-8&serverTimezone=UTC
     username: heebong
     password: 1234
+
+debug: true
+trace: false
