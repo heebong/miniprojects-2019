@@ -1,4 +1,4 @@
-package com.woowacourse.edd.presentation.dto;
+package com.woowacourse.edd.application.dto;
 
 public class VideoSaveRequestDto {
     private String youtubeId;

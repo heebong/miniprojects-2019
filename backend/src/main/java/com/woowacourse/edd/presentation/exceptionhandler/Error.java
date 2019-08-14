@@ -1,4 +1,4 @@
-package com.woowacourse.edd.domain.errors;
+package com.woowacourse.edd.presentation.exceptionhandler;
 
 public class Error {
     private String result;

@@ -4,8 +4,8 @@ import com.woowacourse.edd.domain.Video;
 import com.woowacourse.edd.domain.vo.Contents;
 import com.woowacourse.edd.domain.vo.Title;
 import com.woowacourse.edd.domain.vo.YoutubeId;
-import com.woowacourse.edd.presentation.controller.VideoResponse;
-import com.woowacourse.edd.presentation.dto.VideoSaveRequestDto;
+import com.woowacourse.edd.application.response.VideoResponse;
+import com.woowacourse.edd.application.dto.VideoSaveRequestDto;
 import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;

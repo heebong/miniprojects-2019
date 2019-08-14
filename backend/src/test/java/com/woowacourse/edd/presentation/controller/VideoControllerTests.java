@@ -1,7 +1,7 @@
 package com.woowacourse.edd.presentation.controller;
 
 import com.woowacourse.edd.EddApplicationTests;
-import com.woowacourse.edd.presentation.dto.VideoSaveRequestDto;
+import com.woowacourse.edd.application.dto.VideoSaveRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

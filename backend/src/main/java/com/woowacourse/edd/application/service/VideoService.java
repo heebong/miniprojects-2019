@@ -2,9 +2,9 @@ package com.woowacourse.edd.application.service;
 
 import com.woowacourse.edd.application.converter.VideoConverter;
 import com.woowacourse.edd.domain.Video;
-import com.woowacourse.edd.domain.VideoRepository;
-import com.woowacourse.edd.presentation.controller.VideoResponse;
-import com.woowacourse.edd.presentation.dto.VideoSaveRequestDto;
+import com.woowacourse.edd.repository.VideoRepository;
+import com.woowacourse.edd.application.response.VideoResponse;
+import com.woowacourse.edd.application.dto.VideoSaveRequestDto;
 import org.springframework.stereotype.Service;
 
 @Service

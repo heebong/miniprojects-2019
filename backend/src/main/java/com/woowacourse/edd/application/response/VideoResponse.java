@@ -1,6 +1,4 @@
-package com.woowacourse.edd.presentation.controller;
-
-import java.time.LocalDateTime;
+package com.woowacourse.edd.application.response;
 
 public class VideoResponse {
     private final long id;

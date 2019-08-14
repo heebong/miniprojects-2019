@@ -1,6 +1,5 @@
 package com.woowacourse.edd.presentation.exceptionhandler;
 
-import com.woowacourse.edd.domain.errors.Error;
 import com.woowacourse.edd.exceptions.InvalidTitleException;
 import com.woowacourse.edd.exceptions.InvalidYoutubeIdException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

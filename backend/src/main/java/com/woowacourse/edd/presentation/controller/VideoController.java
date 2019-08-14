@@ -1,7 +1,8 @@
 package com.woowacourse.edd.presentation.controller;
 
 import com.woowacourse.edd.application.service.VideoService;
-import com.woowacourse.edd.presentation.dto.VideoSaveRequestDto;
+import com.woowacourse.edd.application.response.VideoResponse;
+import com.woowacourse.edd.application.dto.VideoSaveRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
