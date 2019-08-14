@@ -6,9 +6,11 @@ import com.woowacourse.edd.application.dto.VideoSaveRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/v1/videos")
 public class VideoController {
     private VideoService videoService;
 
@@ -17,7 +19,7 @@ public class VideoController {
         this.videoService = videoService;
     }
 
-    @PostMapping("/videos")
+    @PostMapping
     public VideoResponse saveVideo(@RequestBody VideoSaveRequestDto requestDto) {
         VideoResponse response = videoService.save(requestDto);
         return response;
