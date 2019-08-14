@@ -25,8 +25,6 @@ public class VideoControllerTests extends EddApplicationTests {
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, title, contents);
 
         webTestClient.post().uri("/api/v1/videos")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
                 .exchange()
                 .expectStatus().isOk()
@@ -49,11 +47,9 @@ public class VideoControllerTests extends EddApplicationTests {
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, title, contents);
 
         webTestClient.post().uri("/api/v1/videos")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
                 .exchange()
-                .expectStatus().isOk()
+                .expectStatus().isBadRequest()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .expectBody()
                 .jsonPath("$.result").isNotEmpty()
@@ -71,11 +67,9 @@ public class VideoControllerTests extends EddApplicationTests {
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, title, contents);
 
         webTestClient.post().uri("/api/v1/videos")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
                 .exchange()
-                .expectStatus().isOk()
+                .expectStatus().isBadRequest()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .expectBody()
                 .jsonPath("$.result").isNotEmpty()

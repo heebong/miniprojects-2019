@@ -4,6 +4,8 @@ import com.woowacourse.edd.application.service.VideoService;
 import com.woowacourse.edd.application.response.VideoResponse;
 import com.woowacourse.edd.application.dto.VideoSaveRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +22,8 @@ public class VideoController {
     }
 
     @PostMapping
-    public VideoResponse saveVideo(@RequestBody VideoSaveRequestDto requestDto) {
+    public ResponseEntity<VideoResponse> saveVideo(@RequestBody VideoSaveRequestDto requestDto) {
         VideoResponse response = videoService.save(requestDto);
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

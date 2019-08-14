@@ -2,6 +2,8 @@ package com.woowacourse.edd.presentation.exceptionhandler;
 
 import com.woowacourse.edd.exceptions.InvalidTitleException;
 import com.woowacourse.edd.exceptions.InvalidYoutubeIdException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -10,13 +12,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class VideoExceptionHandler {
     @ResponseBody
     @ExceptionHandler(InvalidTitleException.class)
-    public Error handleTitleError(InvalidTitleException e) {
-        return new Error("FAIL", e.getMessage());
+    public ResponseEntity<Error> handleTitleError(InvalidTitleException e) {
+        return new ResponseEntity<>(new Error("FAIL", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ResponseBody
     @ExceptionHandler(InvalidYoutubeIdException.class)
-    public Error handleYoutubeIdError(InvalidYoutubeIdException e) {
-        return new Error("FAIL", e.getMessage());
+    public ResponseEntity<Error> handleYoutubeIdError(InvalidYoutubeIdException e) {
+        return new ResponseEntity<>(new Error("FAIL", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }
