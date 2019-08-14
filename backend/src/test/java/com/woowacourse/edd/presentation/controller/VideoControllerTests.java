@@ -39,6 +39,51 @@ public class VideoControllerTests extends EddApplicationTests {
                 .jsonPath("$.createDate").isEqualTo(date);
     }
 
+    @Test
+    void saveVideoTestWhenYoutubeIdError() {
+        String youtubeId = null;
+        String title = "제목";
+        String contents = "내용";
+        String date = getFormedDate();
+
+        VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, title, contents);
+
+        webTestClient.post().uri("/videos")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBody()
+                .jsonPath("$.result").isNotEmpty()
+                .jsonPath("$.result").isEqualTo("FAIL")
+                .jsonPath("$.message").isNotEmpty();
+    }
+
+    @Test
+    void saveVideoTestWhenTitleError() {
+        String youtubeId = "1234!@#$asdf";
+        String title = "";
+        String contents = "내용";
+        String date = getFormedDate();
+
+        VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, title, contents);
+
+        webTestClient.post().uri("/videos")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBody()
+                .jsonPath("$.result").isNotEmpty()
+                .jsonPath("$.result").isEqualTo("FAIL")
+                .jsonPath("$.message").isNotEmpty();
+
+    }
+
     private String getFormedDate() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHH");
