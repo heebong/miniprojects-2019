@@ -78,6 +78,27 @@ public class VideoControllerTests extends EddApplicationTests {
 
     }
 
+    @Test
+    void saveVideoTestWhenContentsError() {
+        String youtubeId = "1234!@#$asdf";
+        String title = "aaa";
+        String contents = " ";
+        String date = getFormedDate();
+
+        VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, title, contents);
+
+        webTestClient.post().uri("/api/v1/videos")
+                .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBody()
+                .jsonPath("$.result").isNotEmpty()
+                .jsonPath("$.result").isEqualTo("FAIL")
+                .jsonPath("$.message").isNotEmpty();
+
+    }
+
     private String getFormedDate() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHH");
