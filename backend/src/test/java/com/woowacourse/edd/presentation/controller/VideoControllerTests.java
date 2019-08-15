@@ -24,7 +24,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, title, contents);
 
-        webTestClient.post().uri("/api/v1/videos")
+        webTestClient.post().uri("/v1/videos")
                 .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
                 .exchange()
                 .expectStatus().isOk()
@@ -46,7 +46,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, title, contents);
 
-        webTestClient.post().uri("/api/v1/videos")
+        webTestClient.post().uri("/v1/videos")
                 .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
                 .exchange()
                 .expectStatus().isBadRequest()
@@ -66,7 +66,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, title, contents);
 
-        webTestClient.post().uri("/api/v1/videos")
+        webTestClient.post().uri("/v1/videos")
                 .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
                 .exchange()
                 .expectStatus().isBadRequest()
@@ -87,7 +87,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, title, contents);
 
-        webTestClient.post().uri("/api/v1/videos")
+        webTestClient.post().uri("/v1/videos")
                 .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
                 .exchange()
                 .expectStatus().isBadRequest()
@@ -96,7 +96,13 @@ public class VideoControllerTests extends EddApplicationTests {
                 .jsonPath("$.result").isNotEmpty()
                 .jsonPath("$.result").isEqualTo("FAIL")
                 .jsonPath("$.message").isNotEmpty();
+    }
 
+    @Test
+    void find_Videos_By_Date_Test() {
+        webTestClient.get().uri("/v1/videos?filter=date&page=0&limit=5")
+                .exchange()
+                .expectStatus().isOk();
     }
 
     private String getFormedDate() {
