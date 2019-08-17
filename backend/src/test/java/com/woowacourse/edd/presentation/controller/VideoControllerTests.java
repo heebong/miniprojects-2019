@@ -4,7 +4,7 @@ import com.woowacourse.edd.EddApplicationTests;
 import com.woowacourse.edd.application.dto.VideoSaveRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.StatusAssertions;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -19,22 +19,46 @@ public class VideoControllerTests extends EddApplicationTests {
     private final String DEFAULT_VIDEO_YOUTUBEID = "S8e1geEpnTA";
     private final String DEFAULT_VIDEO_TITLE = "제목";
     private final String DEFAULT_VIDEO_CONTENTS = "내용";
+    private final String VIDEOS_URI = "/v1/videos";
+
+    @Test
+    void find_video_by_id() {
+        save();
+        executeFindVideo("/1").isOk()
+                .expectBody()
+                .jsonPath("$.id").isNotEmpty()
+                .jsonPath("$.youtubeId").isEqualTo(DEFAULT_VIDEO_YOUTUBEID)
+                .jsonPath("$.title").isEqualTo(DEFAULT_VIDEO_TITLE)
+                .jsonPath("$.contents").isEqualTo(DEFAULT_VIDEO_CONTENTS)
+                .jsonPath("$.createDate").isEqualTo(getFormedDate());
+    }
+
+    @Test
+    void find_video_by_id_not_found() {
+        executeFail(executeFindVideo("/100"), "그런 비디오는 존재하지 않아!");
+    }
+
+    @Test
+    void find_videos_by_date() {
+        executeFindVideos("date").isOk();
+    }
+
+    @Test
+    void find_videos_by_views() {
+        executeFail(executeFindVideos("view"),"지원되지 않는 필터입니다");
+    }
 
     @Test
     void save() {
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(DEFAULT_VIDEO_YOUTUBEID, DEFAULT_VIDEO_TITLE, DEFAULT_VIDEO_CONTENTS);
 
-        webTestClient.post().uri("/v1/videos")
-            .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
-            .exchange()
-            .expectStatus().isOk()
-            .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-            .expectBody()
-            .jsonPath("$.id").isNotEmpty()
-            .jsonPath("$.youtubeId").isEqualTo(DEFAULT_VIDEO_YOUTUBEID)
-            .jsonPath("$.title").isEqualTo(DEFAULT_VIDEO_TITLE)
-            .jsonPath("$.contents").isEqualTo(DEFAULT_VIDEO_CONTENTS)
-            .jsonPath("$.createDate").isEqualTo(getFormedDate());
+        executeSaveVideo(videoSaveRequestDto).isOk()
+                .expectBody()
+                .jsonPath("$.id").isNotEmpty()
+                .jsonPath("$.youtubeId").isEqualTo(DEFAULT_VIDEO_YOUTUBEID)
+                .jsonPath("$.title").isEqualTo(DEFAULT_VIDEO_TITLE)
+                .jsonPath("$.contents").isEqualTo(DEFAULT_VIDEO_CONTENTS)
+                .jsonPath("$.createDate").isEqualTo(getFormedDate());
     }
 
     @Test
@@ -43,15 +67,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, DEFAULT_VIDEO_TITLE, DEFAULT_VIDEO_CONTENTS);
 
-        webTestClient.post().uri("/v1/videos")
-            .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
-            .exchange()
-            .expectStatus().isBadRequest()
-            .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-            .expectBody()
-            .jsonPath("$.result").isNotEmpty()
-            .jsonPath("$.result").isEqualTo("FAIL")
-            .jsonPath("$.message").isNotEmpty();
+        executeFail(executeSaveVideo(videoSaveRequestDto), "유투브 아이디는 필수로 입력해야합니다.");
     }
 
     @Test
@@ -60,15 +76,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(DEFAULT_VIDEO_YOUTUBEID, title, DEFAULT_VIDEO_CONTENTS);
 
-        webTestClient.post().uri("/v1/videos")
-            .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
-            .exchange()
-            .expectStatus().isBadRequest()
-            .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-            .expectBody()
-            .jsonPath("$.result").isNotEmpty()
-            .jsonPath("$.result").isEqualTo("FAIL")
-            .jsonPath("$.message").isNotEmpty();
+        executeFail(executeSaveVideo(videoSaveRequestDto), "제목은 한 글자 이상이어야합니다");
 
     }
 
@@ -78,58 +86,49 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(DEFAULT_VIDEO_YOUTUBEID, DEFAULT_VIDEO_TITLE, contents);
 
-        webTestClient.post().uri("/v1/videos")
-            .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
-            .exchange()
-            .expectStatus().isBadRequest()
-            .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-            .expectBody()
-            .jsonPath("$.result").isNotEmpty()
-            .jsonPath("$.result").isEqualTo("FAIL")
-            .jsonPath("$.message").isNotEmpty();
+        executeFail(executeSaveVideo(videoSaveRequestDto), "내용은 한 글자 이상이어야합니다");
     }
 
-    @Test
-    void find_videos_by_date() {
-        webTestClient.get().uri("/v1/videos?filter=date&page=0&limit=5")
-            .exchange()
-            .expectStatus().isOk();
+    private StatusAssertions executeFindVideo(String uri) {
+        return executeGet(VIDEOS_URI + uri)
+                .exchange()
+                .expectStatus()
+                ;
     }
 
-    @Test
-    void find_videos_by_views() {
-        webTestClient.get().uri("/v1/videos?filter=view&page=0&limit=5")
-            .exchange()
-            .expectStatus().isBadRequest()
-            .expectBody()
-            .jsonPath("$.result").isEqualTo("FAIL")
-            .jsonPath("$.message").isEqualTo("지원되지 않는 필터입니다");
+    private StatusAssertions executeFindVideos(String filter) {
+        return executeGet(VIDEOS_URI + "?filter=" + filter + "&page=0&limit=5")
+                .exchange()
+                .expectStatus()
+                ;
     }
 
-    @Test
-    void find_video_by_id() {
-        save();
-        webTestClient.get().uri("/v1/videos/1")
-            .exchange()
-            .expectStatus().isOk()
-            .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-            .expectBody()
-            .jsonPath("$.id").isNotEmpty()
-            .jsonPath("$.youtubeId").isEqualTo(DEFAULT_VIDEO_YOUTUBEID)
-            .jsonPath("$.title").isEqualTo(DEFAULT_VIDEO_TITLE)
-            .jsonPath("$.contents").isEqualTo(DEFAULT_VIDEO_CONTENTS)
-            .jsonPath("$.createDate").isEqualTo(getFormedDate());
+    private StatusAssertions executeSaveVideo(VideoSaveRequestDto videoSaveRequestDto) {
+        return executePost(VIDEOS_URI)
+                .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
+                .exchange()
+                .expectStatus();
     }
 
-    @Test
-    void find_video_by_id_not_found() {
-        webTestClient.get().uri("/v1/videos/100")
-            .exchange()
-            .expectStatus().isBadRequest()
-            .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-            .expectBody()
-            .jsonPath("$.result").isEqualTo("FAIL")
-            .jsonPath("$.message").isEqualTo("그런 비디오는 존재하지 않아!");
+    private void executeFail(StatusAssertions statusAssertions, String errorMessage) {
+        WebTestClient.BodyContentSpec bodyContentSpec = statusAssertions
+                .isBadRequest()
+                .expectBody();
+
+        checkErrorResponse(bodyContentSpec, errorMessage);
+    }
+
+    private void checkErrorResponse(WebTestClient.BodyContentSpec bodyContentSpec, String errorMessage) {
+        bodyContentSpec.jsonPath("$.result").isEqualTo("FAIL")
+                .jsonPath("$.message").isEqualTo(errorMessage);
+    }
+
+    private WebTestClient.RequestHeadersSpec<?> executeGet(String uri) {
+        return webTestClient.get().uri(uri);
+    }
+
+    private WebTestClient.RequestBodySpec executePost(String uri) {
+        return webTestClient.post().uri(uri);
     }
 
     private String getFormedDate() {
