@@ -25,12 +25,12 @@ public class VideoControllerTests extends EddApplicationTests {
     void find_video_by_id() {
         save();
         executeFindVideo("/1").isOk()
-                .expectBody()
-                .jsonPath("$.id").isNotEmpty()
-                .jsonPath("$.youtubeId").isEqualTo(DEFAULT_VIDEO_YOUTUBEID)
-                .jsonPath("$.title").isEqualTo(DEFAULT_VIDEO_TITLE)
-                .jsonPath("$.contents").isEqualTo(DEFAULT_VIDEO_CONTENTS)
-                .jsonPath("$.createDate").isEqualTo(getFormedDate());
+            .expectBody()
+            .jsonPath("$.id").isNotEmpty()
+            .jsonPath("$.youtubeId").isEqualTo(DEFAULT_VIDEO_YOUTUBEID)
+            .jsonPath("$.title").isEqualTo(DEFAULT_VIDEO_TITLE)
+            .jsonPath("$.contents").isEqualTo(DEFAULT_VIDEO_CONTENTS)
+            .jsonPath("$.createDate").isEqualTo(getFormedDate());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
     @Test
     void find_videos_by_views() {
-        executeFail(executeFindVideos("view"),"지원되지 않는 필터입니다");
+        executeFail(executeFindVideos("view"), "지원되지 않는 필터입니다");
     }
 
     @Test
@@ -53,12 +53,12 @@ public class VideoControllerTests extends EddApplicationTests {
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(DEFAULT_VIDEO_YOUTUBEID, DEFAULT_VIDEO_TITLE, DEFAULT_VIDEO_CONTENTS);
 
         executeSaveVideo(videoSaveRequestDto).isOk()
-                .expectBody()
-                .jsonPath("$.id").isNotEmpty()
-                .jsonPath("$.youtubeId").isEqualTo(DEFAULT_VIDEO_YOUTUBEID)
-                .jsonPath("$.title").isEqualTo(DEFAULT_VIDEO_TITLE)
-                .jsonPath("$.contents").isEqualTo(DEFAULT_VIDEO_CONTENTS)
-                .jsonPath("$.createDate").isEqualTo(getFormedDate());
+            .expectBody()
+            .jsonPath("$.id").isNotEmpty()
+            .jsonPath("$.youtubeId").isEqualTo(DEFAULT_VIDEO_YOUTUBEID)
+            .jsonPath("$.title").isEqualTo(DEFAULT_VIDEO_TITLE)
+            .jsonPath("$.contents").isEqualTo(DEFAULT_VIDEO_CONTENTS)
+            .jsonPath("$.createDate").isEqualTo(getFormedDate());
     }
 
     @Test
@@ -91,9 +91,9 @@ public class VideoControllerTests extends EddApplicationTests {
 
     private StatusAssertions executeFindVideo(String uri) {
         return executeGet(VIDEOS_URI + uri)
-                .exchange()
-                .expectStatus()
-                ;
+            .exchange()
+            .expectStatus()
+            ;
     }
 
     private StatusAssertions executeFindVideos(String filter) {
@@ -105,22 +105,22 @@ public class VideoControllerTests extends EddApplicationTests {
 
     private StatusAssertions executeSaveVideo(VideoSaveRequestDto videoSaveRequestDto) {
         return executePost(VIDEOS_URI)
-                .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
-                .exchange()
-                .expectStatus();
+            .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
+            .exchange()
+            .expectStatus();
     }
 
     private void executeFail(StatusAssertions statusAssertions, String errorMessage) {
         WebTestClient.BodyContentSpec bodyContentSpec = statusAssertions
-                .isBadRequest()
-                .expectBody();
+            .isBadRequest()
+            .expectBody();
 
         checkErrorResponse(bodyContentSpec, errorMessage);
     }
 
     private void checkErrorResponse(WebTestClient.BodyContentSpec bodyContentSpec, String errorMessage) {
         bodyContentSpec.jsonPath("$.result").isEqualTo("FAIL")
-                .jsonPath("$.message").isEqualTo(errorMessage);
+            .jsonPath("$.message").isEqualTo(errorMessage);
     }
 
     private WebTestClient.RequestHeadersSpec<?> executeGet(String uri) {
