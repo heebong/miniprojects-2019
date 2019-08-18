@@ -46,26 +46,19 @@ public class VideoControllerTests extends EddApplicationTests {
 
     @Test
     void find_videos_by_date() {
-//        saveVideo(new VideoSaveRequestDto("111", "tilte1", "contents1"));
-//        saveVideo(new VideoSaveRequestDto("222", "tilte2", "contents2"));
-//        saveVideo(new VideoSaveRequestDto("333", "tilte3", "contents3"));
-//        saveVideo(new VideoSaveRequestDto("444", "tilte4", "contents4"));
-//        saveVideo(new VideoSaveRequestDto("555", "tilte5", "contents5"));
-//        saveVideo(new VideoSaveRequestDto("666", "tilte6", "contents6"));
-//
-//        findVideos(0,6,"createDate","DESC").isOk().expectBody()
-//            .jsonPath("$content.length()").isEqualTo(6)
-//            .jsonPath("$content[0].youtubeId").isEqualTo("666")
-//            .jsonPath("$content[3].youtubeId").isEqualTo("333")
-//            .jsonPath("$content[5].youtubeId").isEqualTo("111");
+        saveVideo(new VideoSaveRequestDto("111", "tilte1", "contents1"));
+        saveVideo(new VideoSaveRequestDto("222", "tilte2", "contents2"));
+        saveVideo(new VideoSaveRequestDto("333", "tilte3", "contents3"));
+        saveVideo(new VideoSaveRequestDto("444", "tilte4", "contents4"));
+        saveVideo(new VideoSaveRequestDto("555", "tilte5", "contents5"));
+        saveVideo(new VideoSaveRequestDto("666", "tilte6", "contents6"));
 
-        findVideos(0,6,"createDate","DESC").isOk();
+        findVideos(0,6,"createDate","DESC").isOk().expectBody()
+            .jsonPath("$.content.length()").isEqualTo(6)
+            .jsonPath("$.content[0].youtubeId").isEqualTo("666")
+            .jsonPath("$.content[3].youtubeId").isEqualTo("333")
+            .jsonPath("$.content[5].youtubeId").isEqualTo("111");
     }
-
-//    @Test
-//    void find_videos_by_views() {
-//        assertFailBadRequest(findVideos("view", 0, 6), "지원되지 않는 필터입니다");
-//    }
 
     @Test
     void save() {
