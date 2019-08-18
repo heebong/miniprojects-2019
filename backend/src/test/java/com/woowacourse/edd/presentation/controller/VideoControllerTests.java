@@ -93,15 +93,13 @@ public class VideoControllerTests extends EddApplicationTests {
     private StatusAssertions findVideo(String uri) {
         return executeGet(VIDEOS_URI + uri)
             .exchange()
-            .expectStatus()
-            ;
+            .expectStatus();
     }
 
     private StatusAssertions findVideos(String filter) {
         return executeGet(VIDEOS_URI + "?filter=" + filter + "&page=0&limit=5")
-                .exchange()
-                .expectStatus()
-                ;
+            .exchange()
+            .expectStatus();
     }
 
     private StatusAssertions saveVideo(VideoSaveRequestDto videoSaveRequestDto) {
