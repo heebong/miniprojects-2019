@@ -9,9 +9,6 @@ import org.springframework.test.web.reactive.server.StatusAssertions;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class VideoControllerTests extends EddApplicationTests {
 
     @Autowired
@@ -36,7 +33,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
     @Test
     void find_video_by_id_not_found() {
-        executeFail(findVideo("/100"), "그런 비디오는 존재하지 않아!");
+        assertFail(findVideo("/100"), "그런 비디오는 존재하지 않아!");
     }
 
     @Test
@@ -46,7 +43,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
     @Test
     void find_videos_by_views() {
-        executeFail(findVideos("view"), "지원되지 않는 필터입니다");
+        assertFail(findVideos("view"), "지원되지 않는 필터입니다");
     }
 
     @Test
@@ -68,7 +65,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, DEFAULT_VIDEO_TITLE, DEFAULT_VIDEO_CONTENTS);
 
-        executeFail(saveVideo(videoSaveRequestDto), "유투브 아이디는 필수로 입력해야합니다.");
+        assertFail(saveVideo(videoSaveRequestDto), "유투브 아이디는 필수로 입력해야합니다.");
     }
 
     @Test
@@ -77,7 +74,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(DEFAULT_VIDEO_YOUTUBEID, title, DEFAULT_VIDEO_CONTENTS);
 
-        executeFail(saveVideo(videoSaveRequestDto), "제목은 한 글자 이상이어야합니다");
+        assertFail(saveVideo(videoSaveRequestDto), "제목은 한 글자 이상이어야합니다");
 
     }
 
@@ -87,7 +84,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(DEFAULT_VIDEO_YOUTUBEID, DEFAULT_VIDEO_TITLE, contents);
 
-        executeFail(saveVideo(videoSaveRequestDto), "내용은 한 글자 이상이어야합니다");
+        assertFail(saveVideo(videoSaveRequestDto), "내용은 한 글자 이상이어야합니다");
     }
 
     private StatusAssertions findVideo(String uri) {
@@ -109,7 +106,7 @@ public class VideoControllerTests extends EddApplicationTests {
             .expectStatus();
     }
 
-    private void executeFail(StatusAssertions statusAssertions, String errorMessage) {
+    private void assertFail(StatusAssertions statusAssertions, String errorMessage) {
         WebTestClient.BodyContentSpec bodyContentSpec = statusAssertions
             .isBadRequest()
             .expectBody();
