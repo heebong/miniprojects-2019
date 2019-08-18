@@ -27,7 +27,7 @@ public class VideoControllerTests extends EddApplicationTests {
         webTestClient.post().uri("/v1/videos")
             .body(Mono.just(videoSaveRequestDto), VideoSaveRequestDto.class)
             .exchange()
-            .expectStatus().isOk()
+            .expectStatus().isCreated()
             .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
             .expectBody()
             .jsonPath("$.id").isNotEmpty()

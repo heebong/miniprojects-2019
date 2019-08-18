@@ -41,6 +41,6 @@ public class VideoController {
     @PostMapping
     public ResponseEntity<VideoResponse> saveVideo(@RequestBody VideoSaveRequestDto requestDto) {
         VideoResponse response = videoService.save(requestDto);
-        return ResponseEntity.ok(response);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
