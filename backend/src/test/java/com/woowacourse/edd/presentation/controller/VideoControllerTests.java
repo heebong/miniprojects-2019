@@ -2,6 +2,7 @@ package com.woowacourse.edd.presentation.controller;
 
 import com.woowacourse.edd.EddApplicationTests;
 import com.woowacourse.edd.application.dto.VideoSaveRequestDto;
+import com.woowacourse.edd.utils.Utils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.reactive.server.StatusAssertions;
@@ -30,7 +31,7 @@ public class VideoControllerTests extends EddApplicationTests {
             .jsonPath("$.youtubeId").isEqualTo(DEFAULT_VIDEO_YOUTUBEID)
             .jsonPath("$.title").isEqualTo(DEFAULT_VIDEO_TITLE)
             .jsonPath("$.contents").isEqualTo(DEFAULT_VIDEO_CONTENTS)
-            .jsonPath("$.createDate").isEqualTo(getFormedDate());
+            .jsonPath("$.createDate").isEqualTo(Utils.getFormedDate());
     }
 
     @Test
@@ -58,7 +59,7 @@ public class VideoControllerTests extends EddApplicationTests {
             .jsonPath("$.youtubeId").isEqualTo(DEFAULT_VIDEO_YOUTUBEID)
             .jsonPath("$.title").isEqualTo(DEFAULT_VIDEO_TITLE)
             .jsonPath("$.contents").isEqualTo(DEFAULT_VIDEO_CONTENTS)
-            .jsonPath("$.createDate").isEqualTo(getFormedDate());
+            .jsonPath("$.createDate").isEqualTo(Utils.getFormedDate());
     }
 
     @Test
@@ -129,11 +130,5 @@ public class VideoControllerTests extends EddApplicationTests {
 
     private WebTestClient.RequestBodySpec executePost(String uri) {
         return webTestClient.post().uri(uri);
-    }
-
-    private String getFormedDate() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHH");
-        return now.format(formatter);
     }
 }

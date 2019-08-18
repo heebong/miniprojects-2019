@@ -8,6 +8,7 @@ import com.woowacourse.edd.domain.vo.Contents;
 import com.woowacourse.edd.domain.vo.Title;
 import com.woowacourse.edd.domain.vo.YoutubeId;
 import com.woowacourse.edd.repository.VideoRepository;
+import com.woowacourse.edd.utils.Utils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,17 +36,11 @@ class VideoServiceTest {
     @Test
     void save() {
         Video video = new Video(new YoutubeId("1234"), new Title("title"), new Contents("contents"));
-        VideoResponse videoResponse = new VideoResponse(100L, "1234", "title", "contents", getFormedDate());
+        VideoResponse videoResponse = new VideoResponse(100L, "1234", "title", "contents", Utils.getFormedDate());
         when(videoRepository.save(any())).thenReturn(video);
         when(videoConverter.toEntity(any())).thenReturn(video);
         when(videoConverter.toResponse(any())).thenReturn(videoResponse);
 
         assertThat(service.save(new VideoSaveRequestDto("1234", "title", "contents"))).isEqualTo(videoResponse);
-    }
-
-    private String getFormedDate() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHH");
-        return now.format(formatter);
     }
 }
