@@ -9,6 +9,8 @@ import org.springframework.test.web.reactive.server.StatusAssertions;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+
 public class VideoControllerTests extends EddApplicationTests {
 
     @Autowired
@@ -18,6 +20,7 @@ public class VideoControllerTests extends EddApplicationTests {
     private final String DEFAULT_VIDEO_TITLE = "제목";
     private final String DEFAULT_VIDEO_CONTENTS = "내용";
     private final String VIDEOS_URI = "/v1/videos";
+    private final LocalDateTime localDateTime = LocalDateTime.now();
 
     @Test
     void find_video_by_id() {
@@ -28,12 +31,12 @@ public class VideoControllerTests extends EddApplicationTests {
             .jsonPath("$.youtubeId").isEqualTo(DEFAULT_VIDEO_YOUTUBEID)
             .jsonPath("$.title").isEqualTo(DEFAULT_VIDEO_TITLE)
             .jsonPath("$.contents").isEqualTo(DEFAULT_VIDEO_CONTENTS)
-            .jsonPath("$.createDate").isEqualTo(Utils.getFormedDate());
+            .jsonPath("$.createDate").isEqualTo(Utils.getFormedDate(localDateTime));
     }
 
     @Test
     void find_video_by_id_not_found() {
-        assertFail(findVideo("/100"), "그런 비디오는 존재하지 않아!");
+        assertFailNotFound(findVideo("/100"), "그런 비디오는 존재하지 않아!");
     }
 
     @Test
@@ -43,7 +46,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
     @Test
     void find_videos_by_views() {
-        assertFail(findVideos("view"), "지원되지 않는 필터입니다");
+        assertFailBadRequest(findVideos("view"), "지원되지 않는 필터입니다");
     }
 
     @Test
@@ -56,7 +59,7 @@ public class VideoControllerTests extends EddApplicationTests {
             .jsonPath("$.youtubeId").isEqualTo(DEFAULT_VIDEO_YOUTUBEID)
             .jsonPath("$.title").isEqualTo(DEFAULT_VIDEO_TITLE)
             .jsonPath("$.contents").isEqualTo(DEFAULT_VIDEO_CONTENTS)
-            .jsonPath("$.createDate").isEqualTo(Utils.getFormedDate());
+            .jsonPath("$.createDate").isEqualTo(Utils.getFormedDate(localDateTime));
     }
 
     @Test
@@ -65,7 +68,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(youtubeId, DEFAULT_VIDEO_TITLE, DEFAULT_VIDEO_CONTENTS);
 
-        assertFail(saveVideo(videoSaveRequestDto), "유투브 아이디는 필수로 입력해야합니다.");
+        assertFailBadRequest(saveVideo(videoSaveRequestDto), "유투브 아이디는 필수로 입력해야합니다.");
     }
 
     @Test
@@ -74,7 +77,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(DEFAULT_VIDEO_YOUTUBEID, title, DEFAULT_VIDEO_CONTENTS);
 
-        assertFail(saveVideo(videoSaveRequestDto), "제목은 한 글자 이상이어야합니다");
+        assertFailBadRequest(saveVideo(videoSaveRequestDto), "제목은 한 글자 이상이어야합니다");
 
     }
 
@@ -84,7 +87,7 @@ public class VideoControllerTests extends EddApplicationTests {
 
         VideoSaveRequestDto videoSaveRequestDto = new VideoSaveRequestDto(DEFAULT_VIDEO_YOUTUBEID, DEFAULT_VIDEO_TITLE, contents);
 
-        assertFail(saveVideo(videoSaveRequestDto), "내용은 한 글자 이상이어야합니다");
+        assertFailBadRequest(saveVideo(videoSaveRequestDto), "내용은 한 글자 이상이어야합니다");
     }
 
     private StatusAssertions findVideo(String uri) {
@@ -106,10 +109,18 @@ public class VideoControllerTests extends EddApplicationTests {
             .expectStatus();
     }
 
-    private void assertFail(StatusAssertions statusAssertions, String errorMessage) {
+    private void assertFailBadRequest(StatusAssertions statusAssertions, String errorMessage) {
         WebTestClient.BodyContentSpec bodyContentSpec = statusAssertions
             .isBadRequest()
             .expectBody();
+
+        checkErrorResponse(bodyContentSpec, errorMessage);
+    }
+
+    private void assertFailNotFound(StatusAssertions statusAssertions, String errorMessage) {
+        WebTestClient.BodyContentSpec bodyContentSpec = statusAssertions
+                .isNotFound()
+                .expectBody();
 
         checkErrorResponse(bodyContentSpec, errorMessage);
     }
