@@ -1,4 +1,4 @@
-const handleSignInEvent = function (event) {
+const handleSignInEvent = function () {
     const emailElm = document.querySelector('input[type=email]')
     const passwordElm = document.querySelector('input[type=password]')
     
