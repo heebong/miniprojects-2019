@@ -80,3 +80,5 @@ const addHeader = function (headerElement){
 
     headerElement.insertAdjacentHTML('afterbegin', notSignedInHeaderTemplate)
 }
+
+addHeader(document.querySelector('.header-wrapper'));
