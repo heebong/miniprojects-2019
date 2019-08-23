@@ -16,8 +16,7 @@ const handleSignInEvent = function (event) {
         return res.json()
     })
     .then(json => {
-        if (res.message) {
-            alert(res.message)
+        if (json.message) {
             const alertElm = document.querySelector('.alert-danger');
             alertElm.innerText = json.message
             alertElm.classList.remove('d-none');
