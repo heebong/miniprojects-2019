@@ -38,6 +38,6 @@ CREATE TABLE IF NOT EXISTS subscription(
 	subscribed_id BIGINT NOT NULL,
 	subscriber_id BIGINT NOT NULL,
 	PRIMARY KEY(id),
-	FOREIGN KEY(subscribed_id) REFERENCES user(id)
+	FOREIGN KEY(subscribed_id) REFERENCES user(id),
 	FOREIGN KEY(subscriber_id) REFERENCES user(id)
-)
+);
