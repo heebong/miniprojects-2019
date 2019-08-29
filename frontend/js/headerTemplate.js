@@ -104,11 +104,11 @@ const addHeader = function (headerElement) {
                 document.querySelector('.btn-logout')
                     .addEventListener('click', handleLogoutEvent)
                 return;
+            } else {
+                headerElement.insertAdjacentHTML('afterbegin', notSignedInHeaderTemplate)
+                setHeaderEvent();
+                return;
             }
-        })
-        .catch(res => {
-            headerElement.insertAdjacentHTML('afterbegin', notSignedInHeaderTemplate)
-            setHeaderEvent();
         })
 }
 
