@@ -110,6 +110,10 @@ const addHeader = function (headerElement) {
                 return;
             }
         })
+        .catch(res => {
+            headerElement.insertAdjacentHTML('afterbegin', notSignedInHeaderTemplate)
+            setHeaderEvent();
+        })
 }
 
 addHeader(document.querySelector('.header-wrapper'));
