@@ -3,6 +3,7 @@ package com.woowacourse.edd.domain;
 import com.woowacourse.edd.exceptions.InvalidContentsException;
 import com.woowacourse.edd.exceptions.InvalidTitleException;
 import com.woowacourse.edd.exceptions.InvalidYoutubeIdException;
+import com.woowacourse.edd.exceptions.UnauthorizedAccessException;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Where;
 
@@ -83,13 +84,20 @@ public class Video {
         }
     }
 
-    public void update(String youtubeId, String title, String contents) {
+    public void update(String youtubeId, String title, String contents, Long userId) {
         checkYoutubeId(youtubeId);
         checkTitle(title);
         checkContents(contents);
+        checkCreator(userId);
         this.youtubeId = youtubeId;
         this.title = title;
         this.contents = contents;
+    }
+
+    private void checkCreator(Long userId) {
+        if (creator.isNotMatch(userId)) {
+            throw new UnauthorizedAccessException();
+        }
     }
 
     public void delete() {

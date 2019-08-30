@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 
+import static com.woowacourse.edd.exceptions.UnauthorizedAccessException.UNAUTHORIZED_ACCESS_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class VideoControllerTests extends BasicControllerTests {
@@ -170,6 +171,18 @@ public class VideoControllerTests extends BasicControllerTests {
         VideoUpdateRequestDto videoUpdateRequestDto = new VideoUpdateRequestDto(DEFAULT_VIDEO_YOUTUBEID, DEFAULT_VIDEO_TITLE, DEFAULT_VIDEO_CONTENTS);
 
         assertFailNotFound(updateVideo(id, videoUpdateRequestDto, getDefaultLoginSessionId()), "그런 비디오는 존재하지 않아!");
+    }
+
+    @Test
+    void update_invalid_user() {
+        String updateInvalidEmail = "updateVideo@email.com";
+        String updateInvalidPW = "P@ssw0rd";
+
+        signUp(new UserSaveRequestDto("name", updateInvalidEmail, updateInvalidPW, updateInvalidPW));
+
+        VideoUpdateRequestDto videoUpdateRequestDto = new VideoUpdateRequestDto(DEFAULT_VIDEO_YOUTUBEID, DEFAULT_VIDEO_TITLE, DEFAULT_VIDEO_CONTENTS);
+
+        assertFailForbidden(updateVideo(DEFAULT_VIDEO_ID, videoUpdateRequestDto, getLoginCookie(new LoginRequestDto(updateInvalidEmail, updateInvalidPW))), UNAUTHORIZED_ACCESS_MESSAGE);
     }
 
     @Test

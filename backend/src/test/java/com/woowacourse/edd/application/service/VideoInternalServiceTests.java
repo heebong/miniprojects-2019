@@ -6,6 +6,7 @@ import com.woowacourse.edd.domain.Video;
 import com.woowacourse.edd.exceptions.InvalidContentsException;
 import com.woowacourse.edd.exceptions.InvalidTitleException;
 import com.woowacourse.edd.exceptions.InvalidYoutubeIdException;
+import com.woowacourse.edd.exceptions.UnauthorizedAccessException;
 import com.woowacourse.edd.exceptions.VideoNotFoundException;
 import com.woowacourse.edd.repository.VideoRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,9 +63,10 @@ class VideoInternalServiceTests {
     @Test
     void update() {
         when(videoRepository.findById(DEFAULT_VIDEO_ID)).thenReturn(Optional.of(video));
+        when(creator.isNotMatch(any())).thenReturn(false);
 
         assertDoesNotThrow(() -> {
-            videoInternalService.update(DEFAULT_VIDEO_ID, new VideoUpdateRequestDto("4321", "title 2", "contents 2"));
+            videoInternalService.update(DEFAULT_VIDEO_ID, new VideoUpdateRequestDto("4321", "title 2", "contents 2"), 1L);
             Video video = videoInternalService.findById(DEFAULT_VIDEO_ID);
             assertThat(video.getYoutubeId()).isEqualTo("4321");
             assertThat(video.getTitle()).isEqualTo("title 2");
@@ -77,7 +79,7 @@ class VideoInternalServiceTests {
         when(videoRepository.findById(DEFAULT_VIDEO_ID)).thenReturn(Optional.of(video));
 
         assertThrows(InvalidYoutubeIdException.class, () -> {
-            videoInternalService.update(DEFAULT_VIDEO_ID, new VideoUpdateRequestDto("", "title2", "contents2"));
+            videoInternalService.update(DEFAULT_VIDEO_ID, new VideoUpdateRequestDto("", "title2", "contents2"), 1L);
         });
     }
 
@@ -86,7 +88,7 @@ class VideoInternalServiceTests {
         when(videoRepository.findById(DEFAULT_VIDEO_ID)).thenReturn(Optional.of(video));
 
         assertThrows(InvalidTitleException.class, () -> {
-            videoInternalService.update(DEFAULT_VIDEO_ID, new VideoUpdateRequestDto("1234", "", "contents2"));
+            videoInternalService.update(DEFAULT_VIDEO_ID, new VideoUpdateRequestDto("1234", "", "contents2"), 1L);
         });
     }
 
@@ -95,7 +97,17 @@ class VideoInternalServiceTests {
         when(videoRepository.findById(DEFAULT_VIDEO_ID)).thenReturn(Optional.of(video));
 
         assertThrows(InvalidContentsException.class, () -> {
-            videoInternalService.update(DEFAULT_VIDEO_ID, new VideoUpdateRequestDto("1234", "title", ""));
+            videoInternalService.update(DEFAULT_VIDEO_ID, new VideoUpdateRequestDto("1234", "title", ""), 1L);
+        });
+    }
+
+    @Test
+    void update_invalid_user() {
+        when(videoRepository.findById(DEFAULT_VIDEO_ID)).thenReturn(Optional.of(video));
+        when(creator.isNotMatch(any())).thenReturn(true);
+
+        assertThrows(UnauthorizedAccessException.class, () -> {
+            videoInternalService.update(DEFAULT_VIDEO_ID, new VideoUpdateRequestDto("1234", "title", "contents 2"), 1L);
         });
     }
 
