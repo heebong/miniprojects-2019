@@ -94,13 +94,14 @@ public class Video {
         this.contents = contents;
     }
 
-    private void checkCreator(Long userId) {
-        if (creator.isNotMatch(userId)) {
+    private void checkCreator(Long creatorId) {
+        if (creator.isNotMatch(creatorId)) {
             throw new UnauthorizedAccessException();
         }
     }
 
-    public void delete() {
+    public void delete(Long creatorId) {
+        checkCreator(creatorId);
         this.isDeleted = true;
     }
 

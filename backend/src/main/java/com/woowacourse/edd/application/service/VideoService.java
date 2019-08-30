@@ -55,8 +55,8 @@ public class VideoService {
         return VideoConverter.toResponse(videoInternalService.findById(videoId));
     }
 
-    public void delete(Long id) {
-        videoInternalService.delete(id);
+    public void delete(Long id, Long creatorId) {
+        videoInternalService.delete(id, creatorId);
     }
 
     public List<VideoPreviewResponse> findByCreatorId(Long creatorId) {

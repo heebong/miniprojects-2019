@@ -49,9 +49,9 @@ class VideoInternalService {
         return video;
     }
 
-    public void delete(Long id) {
+    public void delete(Long id, Long creatorId) {
         Video video = findById(id);
-        video.delete();
+        video.delete(creatorId);
     }
 
     public List<Video> findByCreatorId(Long creatorId) {

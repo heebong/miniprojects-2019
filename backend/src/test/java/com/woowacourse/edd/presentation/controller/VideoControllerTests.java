@@ -226,6 +226,15 @@ public class VideoControllerTests extends BasicControllerTests {
         assertFailNotFound(deleteVideo(100L, getDefaultLoginSessionId()), "그런 비디오는 존재하지 않아!");
     }
 
+    @Test
+    void delete_invalid_user() {
+        String deleteVideoEmail = "deleteVideo@email.com";
+        String deleteVideoPW = "P@ssw0rd";
+        signUp(new UserSaveRequestDto("name", deleteVideoEmail, deleteVideoPW, deleteVideoPW));
+
+        assertFailForbidden(deleteVideo(DEFAULT_VIDEO_ID, getLoginCookie(new LoginRequestDto(deleteVideoEmail, deleteVideoPW))), UNAUTHORIZED_ACCESS_MESSAGE);
+    }
+
     private WebTestClient.ResponseSpec findVideo(String uri) {
         return executeGet(VIDEOS_URI + uri)
             .exchange();

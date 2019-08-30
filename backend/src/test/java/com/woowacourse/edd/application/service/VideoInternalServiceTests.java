@@ -114,16 +114,27 @@ class VideoInternalServiceTests {
     @Test
     void delete() {
         when(videoRepository.findById(DEFAULT_VIDEO_ID)).thenReturn(Optional.of(video));
+        when(creator.isNotMatch(any())).thenReturn(false);
 
         assertDoesNotThrow(() -> {
-            videoInternalService.delete(DEFAULT_VIDEO_ID);
+            videoInternalService.delete(DEFAULT_VIDEO_ID, 1L);
         });
     }
 
     @Test
     void delete_invalid_id() {
         assertThrows(VideoNotFoundException.class, () -> {
-            videoInternalService.delete(DEFAULT_VIDEO_ID + 1L);
+            videoInternalService.delete(DEFAULT_VIDEO_ID + 1L, 1L);
+        });
+    }
+
+    @Test
+    void delete_invalid_user() {
+        when(videoRepository.findById(DEFAULT_VIDEO_ID)).thenReturn(Optional.of(video));
+        when(creator.isNotMatch(any())).thenReturn(true);
+
+        assertThrows(UnauthorizedAccessException.class, () -> {
+            videoInternalService.delete(DEFAULT_VIDEO_ID, 1L);
         });
     }
 }

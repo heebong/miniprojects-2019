@@ -71,8 +71,9 @@ public class VideoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteVideo(@PathVariable Long id) {
-        videoService.delete(id);
+    public ResponseEntity deleteVideo(@PathVariable Long id, HttpSession session) {
+        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
+        videoService.delete(id, sessionUser.getId());
         return ResponseEntity.noContent().build();
     }
 }
