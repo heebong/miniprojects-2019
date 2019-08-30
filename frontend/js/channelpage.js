@@ -182,7 +182,6 @@ const channelService = (function () {
                     document.querySelector('#btn-leave').classList.remove('d-none')
                 }
             });
-
             return;
         }
     
