@@ -84,11 +84,11 @@ public class Video {
         }
     }
 
-    public void update(String youtubeId, String title, String contents, Long userId) {
+    public void update(String youtubeId, String title, String contents, Long creatorId) {
         checkYoutubeId(youtubeId);
         checkTitle(title);
         checkContents(contents);
-        checkCreator(userId);
+        checkCreator(creatorId);
         this.youtubeId = youtubeId;
         this.title = title;
         this.contents = contents;

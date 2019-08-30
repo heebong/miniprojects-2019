@@ -43,9 +43,9 @@ class VideoInternalService {
         findById(videoId).increaseViewCount();
     }
 
-    public Video update(Long id, VideoUpdateRequestDto requestDto, Long userId) {
+    public Video update(Long id, VideoUpdateRequestDto requestDto, Long creatorId) {
         Video video = findById(id);
-        video.update(requestDto.getYoutubeId(), requestDto.getTitle(), requestDto.getContents(), userId);
+        video.update(requestDto.getYoutubeId(), requestDto.getTitle(), requestDto.getContents(), creatorId);
         return video;
     }
 

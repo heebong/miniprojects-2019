@@ -45,8 +45,8 @@ public class VideoService {
         return VideoConverter.toResponse(video);
     }
 
-    public VideoUpdateResponse update(Long id, VideoUpdateRequestDto requestDto, Long userId) {
-        Video video = videoInternalService.update(id, requestDto, userId);
+    public VideoUpdateResponse update(Long id, VideoUpdateRequestDto requestDto, Long creatorId) {
+        Video video = videoInternalService.update(id, requestDto, creatorId);
         return VideoConverter.toUpdateResponse(video);
     }
 
