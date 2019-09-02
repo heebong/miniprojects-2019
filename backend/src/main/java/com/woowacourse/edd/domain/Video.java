@@ -84,24 +84,24 @@ public class Video {
         }
     }
 
-    public void update(String youtubeId, String title, String contents, Long creatorId) {
+    public void update(String youtubeId, String title, String contents, Long loginedUserId) {
         checkYoutubeId(youtubeId);
         checkTitle(title);
         checkContents(contents);
-        checkCreator(creatorId);
+        checkCreator(loginedUserId);
         this.youtubeId = youtubeId;
         this.title = title;
         this.contents = contents;
     }
 
-    private void checkCreator(Long creatorId) {
-        if (creator.isNotMatch(creatorId)) {
+    private void checkCreator(Long loginedUserId) {
+        if (creator.isNotMatch(loginedUserId)) {
             throw new UnauthorizedAccessException();
         }
     }
 
-    public void delete(Long creatorId) {
-        checkCreator(creatorId);
+    public void delete(Long loginedUserId) {
+        checkCreator(loginedUserId);
         this.isDeleted = true;
     }
 
