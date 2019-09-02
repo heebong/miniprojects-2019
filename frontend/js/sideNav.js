@@ -95,7 +95,7 @@ const addSubscribe = function (id) {
 const addSubscribeTemplates = function (data) {
     const addSubscribeTemplate = function (data) {
         const subscribeTemplate =
-            `<li class="nav-item">
+            `<li class="nav-item subscription">
                 <a class="" href="/video-channel.html?id=${data.id}">
                     <span class="icon-holder">
                         <img class="profile-img img-fluid" src="./images/default/eastjun_profile.jpg" alt="">
@@ -108,6 +108,8 @@ const addSubscribeTemplates = function (data) {
         subscribeNextElem.insertAdjacentHTML('beforebegin', subscribeTemplate)
     }
     
+
+    document.querySelectorAll('.subscription').forEach(elem => elem.parentNode.removeChild(elem))
     for (let i = 0; i < data.length; i++) {
         addSubscribeTemplate(data[i])
     }
