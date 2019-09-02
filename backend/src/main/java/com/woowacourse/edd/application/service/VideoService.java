@@ -45,8 +45,8 @@ public class VideoService {
         return VideoConverter.toResponse(video);
     }
 
-    public VideoUpdateResponse update(Long id, VideoUpdateRequestDto requestDto, Long creatorId) {
-        Video video = videoInternalService.update(id, requestDto, creatorId);
+    public VideoUpdateResponse update(Long id, VideoUpdateRequestDto requestDto, Long loginedUserId) {
+        Video video = videoInternalService.update(id, requestDto, loginedUserId);
         return VideoConverter.toUpdateResponse(video);
     }
 
@@ -55,8 +55,8 @@ public class VideoService {
         return VideoConverter.toResponse(videoInternalService.findById(videoId));
     }
 
-    public void delete(Long id, Long creatorId) {
-        videoInternalService.delete(id, creatorId);
+    public void delete(Long id, Long logindedUserId) {
+        videoInternalService.delete(id, logindedUserId);
     }
 
     public List<VideoPreviewResponse> findByCreatorId(Long creatorId) {

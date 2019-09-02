@@ -43,15 +43,15 @@ class VideoInternalService {
         findById(videoId).increaseViewCount();
     }
 
-    public Video update(Long id, VideoUpdateRequestDto requestDto, Long creatorId) {
+    public Video update(Long id, VideoUpdateRequestDto requestDto, Long loginedUserId) {
         Video video = findById(id);
-        video.update(requestDto.getYoutubeId(), requestDto.getTitle(), requestDto.getContents(), creatorId);
+        video.update(requestDto.getYoutubeId(), requestDto.getTitle(), requestDto.getContents(), loginedUserId);
         return video;
     }
 
-    public void delete(Long id, Long creatorId) {
+    public void delete(Long id, Long loginedUserId) {
         Video video = findById(id);
-        video.delete(creatorId);
+        video.delete(loginedUserId);
     }
 
     public List<Video> findByCreatorId(Long creatorId) {
