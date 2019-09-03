@@ -6,12 +6,12 @@ const channelCtx = {
 
 if (!wootubeCtx.util.getUrlParams('id')) {
     api.retrieveLoginInfo()
-    .then(res => {
-        if (res.status !== 200) {
-            alert("로그인이 필요합니다.")
-            window.location.href = "/login.html"
-        }
-    })
+        .then(res => {
+            if (res.status !== 200) {
+                alert('로그인이 필요합니다.')
+                window.location.href = '/login.html'
+            }
+        })
 }
 
 document.querySelector('#btn-update').addEventListener('click', () => {
@@ -23,23 +23,23 @@ document.querySelector('#btn-submit').addEventListener('click', () => {
     const emailInput = document.querySelector('#update-email')
 
     api.retrieveLoginInfo()
-    .then(res => res.json())
-    .then(json => api.updateUser(json.id, JSON.stringify({
-        name: nameInput.value,
-        email: emailInput.value,
-    })))
-    .then(res => {
-        if (res.status === 200) {
-            window.location.reload()
-            return
-        }
-        res.json()
-        .then(json => {
-            const alertElm = document.querySelector('.alert.alert-danger')
-            alertElm.innerText = json.message
-            alertElm.classList.remove('d-none')
+        .then(res => res.json())
+        .then(json => api.updateUser(json.id, JSON.stringify({
+            name: nameInput.value,
+            email: emailInput.value,
+        })))
+        .then(res => {
+            if (res.status === 200) {
+                window.location.reload()
+                return
+            }
+            res.json()
+                .then(json => {
+                    const alertElm = document.querySelector('.alert.alert-danger')
+                    alertElm.innerText = json.message
+                    alertElm.classList.remove('d-none')
+                })
         })
-    })
 })
 
 document.querySelector('#btn-leave').addEventListener('click', () => {
@@ -64,21 +64,21 @@ document.querySelector('#btn-leave').addEventListener('click', () => {
     }
     
     api.retrieveLoginInfo()
-    .then(res => res.json())
-    .then(json => api.deleteUser(json.id))
-    .then(res => {
-        if (res.status === 204) {
-            alert('탈퇴되었습니다')
-            window.location.href = '/'
-            return
-        }
-        return res.json()
-    })
-    .then(json => {
-        const alertElm = document.querySelector('.alert.alert-danger')
-        alertElm.innerText = json.message
-        alertElm.classList.remove('d-none')
-    })
+        .then(res => res.json())
+        .then(json => api.deleteUser(json.id))
+        .then(res => {
+            if (res.status === 204) {
+                alert('탈퇴되었습니다')
+                window.location.href = '/'
+                return
+            }
+            return res.json()
+        })
+        .then(json => {
+            const alertElm = document.querySelector('.alert.alert-danger')
+            alertElm.innerText = json.message
+            alertElm.classList.remove('d-none')
+        })
 })
 
 const changeUpdateState = function (flags) {
@@ -129,19 +129,19 @@ const channelService = (function () {
         }
 
         api.subscribe(id)
-        .then(res => {
-            if (res.status == 400) {
-                res.json().then(err => alert(err.message))
-            }
-            if (res.status !== 201) {
-                alert('실패했습니다. 다시 시도해주세요.')
-            } else {
-                alert('구독되었습니다.')
-                api.retrieveLoginInfo()
-                .then(res => res.json())
-                .then(json => addSubscribe(json.id))
-            }
-        })
+            .then(res => {
+                if (res.status == 400) {
+                    res.json().then(err => alert(err.message))
+                }
+                if (res.status !== 201) {
+                    alert('실패했습니다. 다시 시도해주세요.')
+                } else {
+                    alert('구독되었습니다.')
+                    api.retrieveLoginInfo()
+                        .then(res => res.json())
+                        .then(json => addSubscribe(json.id))
+                }
+            })
     }
     
     const cancelSubscribe = function() {
@@ -151,16 +151,16 @@ const channelService = (function () {
         }
 
         api.cancelSubscribe(id)
-        .then(res => {
-            if (res.status !== 204) {
-                alert('실패했습니다. 다시 시도해주세요.')
-            } else {
-                alert('구독을 취소하였습니다.')
-                api.retrieveLoginInfo()
-                .then(res => res.json())
-                .then(json => addSubscribe(json.id))
-            }
-        })
+            .then(res => {
+                if (res.status !== 204) {
+                    alert('실패했습니다. 다시 시도해주세요.')
+                } else {
+                    alert('구독을 취소하였습니다.')
+                    api.retrieveLoginInfo()
+                        .then(res => res.json())
+                        .then(json => addSubscribe(json.id))
+                }
+            })
     }
     
     const setSubscribeBtns = function() {
